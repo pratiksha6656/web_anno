@@ -1,0 +1,121 @@
+
+<html>
+<head>An Example of simple Web Annotation 
+</head>
+
+<body>
+<button onclick="Perform_renaration()"> Check Re-narration </button>
+<div id="hello">
+<p class='example'> The Web Annotation Working Group has published three Recommendations for expressing annotations on the Web: the Web Annotation Data Model [annotation-model]; the Web Annotation Vocabulary [annotation-vocab]; and the Web Annotation Protocol [annotation-protocol]. These Recommendations define a serialization of the Model in a new, Web annotation-specific profile of JSON-LD [json-ld].
+
+This Note describes and illustrates potential approaches for including annotations within HTML documents. Examples also are included illustrating the use within an HTML document of annotation Selectors as fragment identifiers. (The Working Group's Selectors and States Reference Note [selectors-states] defines the syntax used for Selectors as fragment identifiers.)
+
+The approaches described in this document are incomplete and preliminary. They do not exhaust the full range of feasible options. The approaches discussed in this note have emerged from Working Group discussions and should be considered no more than initial starting points for further discussion, experimentation and development.</p>
+</div>
+
+<p id="display"></p>
+
+<script type="text/javascript">
+var data = {
+    "@context": "http://schema.org/",
+    "id": "file:///C:/Users/Ashwini/Desktop/An/anno.html",
+    "type": "Annotation",
+    "motivation": "editing",
+
+    "target": {
+        "source": "file:///C:/Users/Ashwini/Desktop/An/anno.html",
+        "selector": {
+            "type": "CssSelector",
+            "value": "#hello.p"
+        }
+    },
+
+    "body": {
+        "type": "TextualBody",
+        "value": "Recommendations for expressing",
+        "format": "text/plain",
+        "language": "en"
+    },
+
+    "created": "2017-01-26T17:30:04.639Z",
+    "creator": {
+        "type": "Person",
+        "email": "ashwinij859@gmail.com",
+        "name": "Ashu"
+    }
+};
+
+function Perform_renaration() {
+document.getElementById("display").innerText = data.body.value;
+}
+</script>
+
+<!--
+<script type="text/javascript">
+var hellodiv = document.getElementById("hello");
+hellodiv.style.background = "yellow";
+</script>
+-->
+<button onclick="GetSelectedText()">Get the selected text!</button>
+<button onclick="replaceSelectedText()">Replace selected text!</button>
+<button onclick="highlightText()">Highlight text!</button>
+	<script>
+	function GetSelectedText () {
+            if (window.getSelection) {  // all browsers, except IE before version 9
+                var range = window.getSelection();   // window object represents an open window in a browser. Returns a Selection object representing the range of text selected by the user
+                rag = range.toString();    // converts range array  into a String                                 
+                alert (range.toString ()); // Displays alert message which contains selected text bu user
+            }
+        }
+    </script>
+    <script type="text/javascript">
+
+	function replaceSelectedText() {
+    var sel, range;
+    if (window.getSelection) {
+        sel = window.getSelection(); 
+       //console.log(sel);
+        if (sel.rangeCount) {
+            range = sel.getRangeAt(0); //returns the number of ranges in the selection starting at 0 .
+            //console.log(range);
+            range.deleteContents(); //removes the contents of the Range from the document.
+            range.insertNode(document.createTextNode(data.body.value));//The new node is inserted at the start boundary point of the Range.
+         }
+        	
+    	} 
+	}
+
+	</script>
+
+	<script type="text/javascript">
+	function highlightText() {
+    var sel, range, node;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = window.getSelection().getRangeAt(0);
+            
+            var html = '<span style="background-color:yellow;">' + range + '</span>'
+            range.deleteContents();
+            
+            var el = document.createElement("div");
+            el.innerHTML = html;
+            var frag = document.createDocumentFragment(), node, lastNode;
+            while ( (node = el.firstChild) ) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+        }
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        range.collapse(false);
+        range.pasteHTML(html);
+    }
+
+	}		
+	</script>
+</body>
+</html>
+
+
+
